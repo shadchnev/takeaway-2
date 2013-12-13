@@ -41,6 +41,7 @@ describe Takeaway do
       takeaway.place_order("wedges")
       takeaway.pay(12)
       takeaway.complete_order
+      # this test would never fail because complete? always returns true
       expect(takeaway.complete?).to be_true
     end
 
@@ -56,9 +57,15 @@ describe Takeaway do
       takeaway.place_order("chicken wings")
       takeaway.pay(25.50)
       takeaway.complete_order
+      # This expectation is set on the double. Of course this test passes,
+      # there's no way it can fail.
+      # If you can change your implemenation and the test still passes,
+      # it's a wrong test
       expect(sendtext.send).to eq("Thanks for your order! It shall arrive no later than #{delivery_time.strftime("%H")}:#{delivery_time.strftime("%M")}.")
     end
 
+    # You can't test Twilio functionality here because your Takeaway class doesn't
+    # use the SendText#send method at all
     xit "TWILIO - send a text message confirming your order and a delivery time" do
       takeaway.place_order("pizza")
       takeaway.place_order("pizza")
